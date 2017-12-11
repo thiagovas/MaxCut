@@ -3,6 +3,10 @@ using SCS # Pkg.add("SCS")
 
 "Max-Cut"
 
+function input()
+    readline(STDIN)
+end
+
 function goemansWilliamson{T<:Real}(W::Matrix{T}; tol::Real=1e-1, iter::Int=100)
 	"Partition a graph into two disjoint sets such that the sum of the edge weights
 	from all edges which cross the partition is as large as possible (known to be NP-hard)."
@@ -62,15 +66,25 @@ function goemansWilliamson{T<:Real}(W::Matrix{T}; tol::Real=1e-1, iter::Int=100)
 end
 
 function test()
-	W = [0 5 2 1 0; 
-		 5 0 3 2 0; 
-		 2 3 0 0 0; 
-		 1 2 0 0 4; 
-		 0 0 0 4 0]
-
+  v1 = [parse(Int, ss) for ss in split(input())]
+  n = v1[1]
+  m = v1[2]
+  W = zeros(n,n)
+  i = 0
+  while i < m
+    v2 = [parse(Int, ss) for ss in split(input())]
+    u = v2[1]
+    v = v2[2]
+    c = v2[3]
+    W[u,v] = 1
+    W[v,u] = 1
+    i += 1
+  end
+  
 	maxcut, maxpartition = goemansWilliamson(W)
 	@show maxcut
 	@show maxpartition
 	nothing
 end
 
+test()
